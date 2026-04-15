@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>War Sim</title>
+  <style>
+    body { margin: 0; overflow: hidden; }
+    canvas { background: #111; display: block; }
+  </style>
+</head>
+<body>
+
+<canvas id="map"></canvas>
+
+<script>
+const canvas = document.getElementById("map");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let drawing = false;
+let startX = 0;
+let startY = 0;
+let lines = [];
+
+canvas.addEventListener("mousedown", (e) => {
+  drawing = true;
+  startX = e.clientX;
+  startY = e.clientY;
+});
+
+canvas.addEventListener("mouseup", (e) => {
+  if (!drawing) return;
+  drawing = false;
+
+  let endX = e.clientX;
+  let endY = e.clientY;
+
+  lines.push({ x1: startX, y1: startY, x2: endX, y2: endY });
+  draw();
+});
+
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  ctx.strokeStyle = "white";
+  ctx.lineWidth = 3;
+
+  for (let l of lines) {
+    ctx.beginPath();
+    ctx.moveTo(l.x1, l.y1);
+    ctx.lineTo(l.x2, l.y2);
+    ctx.stroke();
+  }
+}
+</script>
+
+</body>
+</html>
